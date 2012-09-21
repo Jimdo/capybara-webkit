@@ -9,12 +9,6 @@ module Capybara::Webkit
 
     attr_reader :port
 
-    class << self
-      def use_webkit_server_binary(binary_path)
-        FileUtils.ln_s(binary_path, SERVER_PATH, :force => true)
-      end
-    end
-
     def initialize(options = {})
       @socket_class = options[:socket_class] || TCPSocket
       @stdout = options.has_key?(:stdout) ?  options[:stdout] : $stdout

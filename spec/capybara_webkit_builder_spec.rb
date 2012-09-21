@@ -35,6 +35,15 @@ describe CapybaraWebkitBuilder do
   end
 
   describe "#link_existing_binary_for_platform" do
+    around :each do |example|
+      begin
+        save_path_env = ENV['PATH']
+        ENV['PATH'] = Dir.tmpdir
+        example.run
+      ensure
+        ENV['PATH'] = save_path_env
+      end
+    end
 
     describe "when no precompiled binary is available" do
       it "should return false" do
@@ -43,26 +52,24 @@ describe CapybaraWebkitBuilder do
     end
 
     describe "when precompiled binary is available" do
+
       around :each do |example|
         begin
-          save_path_env = ENV['PATH']
-          ENV['PATH'] = "#{Dir.tmpdir}:#{ENV['PATH']}"
+          bin_webkit_server = File.expand_path("../../bin/webkit_server", __FILE__)
+          FileUtils.mv bin_webkit_server, bin_webkit_server + ".org"
 
           webkit_binary = "#{Dir.tmpdir}/webkit_server"
           File.new(webkit_binary, File::CREAT|File::TRUNC|File::RDWR, 0700).close
-          
           example.run
         ensure
-          ENV['PATH'] = save_path_env
+          FileUtils.mv bin_webkit_server + ".org", bin_webkit_server
           FileUtils.rm webkit_binary
         end
       end
 
       it "should return true" do
         builder.link_existing_binary_for_platform.should == true
-        
       end
-
     end
 
     # it "should not find a precomiled binary" do

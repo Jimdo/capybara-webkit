@@ -81,10 +81,9 @@ module CapybaraWebkitBuilder
   end
 
   def link_existing_binary_for_platform
-    webkit_server_binary_path = `which webkit_server`.strip
-    
+    webkit_server_binary_path = `/usr/bin/which webkit_server`.strip
     unless webkit_server_binary_path.empty?
-      Capybara::Webkit::Connection.use_webkit_server_binary(webkit_server_binary_path)
+      FileUtils.ln_s(webkit_server_binary_path, File.expand_path("../../bin/webkit_server", __FILE__), :force => true)
       true
     else
       false
