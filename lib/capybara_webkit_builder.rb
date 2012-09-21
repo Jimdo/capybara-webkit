@@ -79,4 +79,15 @@ module CapybaraWebkitBuilder
     build &&
     clean
   end
+
+  def link_existing_binary_for_platform
+    webkit_server_binary_path = `which webkit_server`.strip
+    
+    unless webkit_server_binary_path.empty?
+      Capybara::Webkit::Connection.use_webkit_server_binary(webkit_server_binary_path)
+      true
+    else
+      false
+    end
+  end
 end
