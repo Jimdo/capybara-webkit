@@ -84,6 +84,7 @@ module CapybaraWebkitBuilder
     webkit_server_binary_path = `/usr/bin/which webkit_server`.strip
     unless webkit_server_binary_path.empty?
       FileUtils.ln_s(webkit_server_binary_path, File.expand_path("../../bin/webkit_server", __FILE__), :force => true)
+      clean
       true
     else
       false
