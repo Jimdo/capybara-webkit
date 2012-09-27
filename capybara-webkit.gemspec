@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.require_path = "lib"
 
   webkit_server = `which webkit_server`.strip
+  puts "Webkit at #{webkit_server}"
 
   unless webkit_server.empty?
     s.extensions = "extconf.rb"
