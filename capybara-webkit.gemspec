@@ -14,13 +14,13 @@ Gem::Specification.new do |s|
   s.require_path = "lib"
 
   webkit_server = `which webkit_server`.strip
-  puts "Webkit at #{webkit_server}"
-
   if webkit_server.empty?
     s.extensions = "extconf.rb"
   else
-    puts "Using webkit_server found at `#{webkit_server}`."
     FileUtils.ln_s(webkit_server, File.expand_path("../bin", __FILE__), :force => true)
+    s.post_install_message = <<-MESSAGE
+ !    Capybara-Webkit is using the webkit_server binary found at '#{webkit_server}'.
+  MESSAGE
   end
 
   s.add_runtime_dependency("capybara", [">= 1.0.0", "< 1.2"])
