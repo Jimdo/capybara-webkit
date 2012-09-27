@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   webkit_server = `which webkit_server`.strip
   puts "Webkit at #{webkit_server}"
 
-  unless webkit_server.empty?
+  if webkit_server.empty?
     s.extensions = "extconf.rb"
   else
     puts "Using webkit_server found at `#{webkit_server}`."
