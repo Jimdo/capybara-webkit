@@ -13,7 +13,14 @@ Gem::Specification.new do |s|
   s.test_files   = `git ls-files -- {spec,features}/*`.split("\n")
   s.require_path = "lib"
 
-  s.extensions = "extconf.rb"
+  webkit_server = `which webkit_server`.strip
+
+  unless webkit_server.empty?
+    s.extensions = "extconf.rb"
+  else
+    puts "Using webkit_server found at `#{webkit_server}`."
+    FileUtils.ln_s(webkit_server, File.expand_path("../bin", __FILE__), :force => true)
+  end
 
   s.add_runtime_dependency("capybara", [">= 1.0.0", "< 1.2"])
   s.add_runtime_dependency("json")
